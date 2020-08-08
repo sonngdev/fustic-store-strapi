@@ -5,14 +5,13 @@
  * to customize this controller
  */
 const { sanitizeEntity } = require('strapi-utils');
+const { removeUserInfo } = require('../../../utils/response');
 
 function sanitizeGeneralConfig(config) {
-  let sanitized;
+  let sanitized = config;
 
-  sanitized = sanitizeEntity(config, { model: strapi.models['general-config'] });
-
-  delete sanitized.created_by;
-  delete sanitized.updated_by;
+  sanitized = sanitizeEntity(sanitized, { model: strapi.models['general-config'] });
+  sanitized = removeUserInfo(sanitized);
 
   return sanitized;
 }
