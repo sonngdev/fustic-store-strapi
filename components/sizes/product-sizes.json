@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_sizes_product_sizes",
+  "info": {
+    "name": "Product sizes",
+    "icon": "hand-lizard"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "integer"
+    }
+  }
+}
