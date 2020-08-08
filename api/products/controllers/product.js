@@ -24,6 +24,12 @@ function transformImages(images) {
       is_alt_thumbnail: i === 1,
     };
     transformed = removeUserInfo(transformed);
+    if (process.env.NODE_ENV === 'development') {
+      transformed.url = `http://localhost:1337${transformed.url}`;
+      Object.entries(transformed.formats).forEach(([_, format]) => {
+        format.url = `http://localhost:1337${format.url}`;
+      })
+    }
     return transformed;
   });
 }
