@@ -27,4 +27,10 @@ module.exports = {
 
     return entities.map(sanitizeCategory);
   },
+
+  async findOne(ctx) {
+    const { id } = ctx.params;
+    const entity = await strapi.services.category.findOne({ id });
+    return sanitizeCategory(entity);
+  },
 };
