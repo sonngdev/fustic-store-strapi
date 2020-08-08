@@ -70,7 +70,12 @@ module.exports = {
 
   async findOne(ctx) {
     const { id } = ctx.params;
-    const entity = await strapi.services.product.findOne({ id });
+    let entity;
+    try {
+      entity = await strapi.services.product.findOne({ id });
+    } catch {
+      entity = await strapi.services.product.findOne({ slug: id });
+    }
     return transformProduct(entity);
   },
 };

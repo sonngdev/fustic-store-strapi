@@ -30,7 +30,12 @@ module.exports = {
 
   async findOne(ctx) {
     const { id } = ctx.params;
-    const entity = await strapi.services.category.findOne({ id });
+    let entity;
+    try {
+      entity = await strapi.services.category.findOne({ id });
+    } catch {
+      entity = await strapi.services.category.findOne({ slug: id });
+    }
     return sanitizeCategory(entity);
   },
 };
