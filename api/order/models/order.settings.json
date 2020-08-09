@@ -1,0 +1,56 @@
+{
+  "kind": "collectionType",
+  "collectionName": "Orders",
+  "info": {
+    "name": "Order"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "cod",
+        "bank_transfer",
+        "paypal"
+      ]
+    },
+    "first_name": {
+      "type": "string"
+    },
+    "last_name": {
+      "type": "string"
+    },
+    "email": {
+      "type": "email"
+    },
+    "phone_number": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "district": {
+      "type": "string"
+    },
+    "postal_code": {
+      "type": "string"
+    },
+    "address": {
+      "type": "text"
+    },
+    "notes": {
+      "type": "text"
+    },
+    "products": {
+      "type": "component",
+      "repeatable": true,
+      "component": "products.product-by-size"
+    }
+  }
+}
