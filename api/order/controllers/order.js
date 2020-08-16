@@ -36,6 +36,19 @@ async function transformOrder(order) {
   return transformed;
 }
 
+async function subtractProductQuantity(entries) {
+  for (const entry of entries) {
+    const product = await strapi.services.product.findOne({ id: entry.product.id });
+    const newSizes = product.sizes.map((productSize) => {
+      if (productSize.name === entry.size) {
+        return { ...productSize, quantity: productSize.quantity - entry.quantity };
+      }
+      return productSize;
+    })
+    await strapi.services.product.update({ id: product.id }, { sizes: newSizes });
+  }
+}
+
 module.exports = {
   async create(ctx) {
     let entity;
@@ -45,6 +58,8 @@ module.exports = {
     } else {
       entity = await strapi.services.order.create(ctx.request.body);
     }
+    await subtractProductQuantity(entity.products);
+
     return transformOrder(entity);
   },
 };
