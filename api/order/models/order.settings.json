@@ -51,6 +51,9 @@
       "type": "component",
       "repeatable": true,
       "component": "products.product-by-size"
+    },
+    "paypal_order": {
+      "type": "json"
     }
   }
 }
