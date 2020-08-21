@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_products_product_by_sizes",
+  "info": {
+    "name": "Ordered product",
+    "icon": "th-large"
+  },
+  "options": {},
+  "attributes": {
+    "product": {
+      "model": "product"
+    },
+    "size": {
+      "type": "string"
+    },
+    "quantity": {
+      "type": "integer"
+    }
+  }
+}

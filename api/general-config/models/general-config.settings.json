@@ -11,6 +11,14 @@
   "attributes": {
     "landing_vimeo_id": {
       "type": "string"
+    },
+    "shipping_fee_vnd": {
+      "type": "integer",
+      "default": 0
+    },
+    "shipping_fee_usd": {
+      "type": "decimal",
+      "default": 0
     }
   }
 }
