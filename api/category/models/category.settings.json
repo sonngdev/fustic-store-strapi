@@ -15,6 +15,10 @@
     "slug": {
       "type": "uid",
       "targetField": "name"
+    },
+    "position": {
+      "type": "integer",
+      "default": 0
     }
   }
 }
