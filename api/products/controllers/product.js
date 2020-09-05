@@ -34,15 +34,6 @@ function transformImages(images) {
   });
 }
 
-function transformSizes(sizes) {
-  return sizes.map((size) => {
-    let transformed = { ...size };
-    transformed.in_stock = transformed.quantity > 0;
-    delete transformed.quantity;
-    return transformed;
-  });
-}
-
 function transformProduct(product) {
   let transformed = { ...product };
 
@@ -51,7 +42,6 @@ function transformProduct(product) {
 
   transformed.category = transformCategory(transformed.category);
   transformed.images = transformImages(transformed.images);
-  transformed.sizes = transformSizes(transformed.sizes);
 
   return transformed;
 }
