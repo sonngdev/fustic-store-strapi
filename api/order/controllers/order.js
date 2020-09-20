@@ -5,8 +5,9 @@
  * to customize this controller
  */
 
-const { parseMultipartData, sanitizeEntity } = require('strapi-utils');
+const { sanitizeEntity } = require('strapi-utils');
 const { removeUserInfo } = require('../../../utils/response');
+const { CartValidator, StockValidator, StockSubtractor } = require('../../../utils/order');
 
 async function calculateTotalAmount(order) {
   const generalConfig = await strapi.services['general-config'].find();
@@ -36,30 +37,20 @@ async function transformOrder(order) {
   return transformed;
 }
 
-async function subtractProductQuantity(entries) {
-  for (const entry of entries) {
-    const product = await strapi.services.product.findOne({ id: entry.product.id });
-    const newSizes = product.sizes.map((productSize) => {
-      if (productSize.name === entry.size) {
-        return { ...productSize, quantity: productSize.quantity - entry.quantity };
-      }
-      return productSize;
-    })
-    await strapi.services.product.update({ id: product.id }, { sizes: newSizes });
-  }
-}
-
 module.exports = {
   async create(ctx) {
-    let entity;
-    if (ctx.is('multipart')) {
-      const { data, files } = parseMultipartData(ctx);
-      entity = await strapi.services.order.create(data, { files });
-    } else {
-      entity = await strapi.services.order.create(ctx.request.body);
-    }
-    await subtractProductQuantity(entity.products);
+    const cartValidator = new CartValidator(ctx.request.body.products);
+    const cartValid = await cartValidator.isValid();
+    if (!cartValid) return ctx.badRequest('Cart is invalid');
 
+    const stockValidator = new StockValidator(cartValidator);
+    const stockValid = await stockValidator.isValid();
+    if (!stockValid) return ctx.badRequest(await stockValidator.getEntries());
+
+    const stockSubtractor = new StockSubtractor(stockValidator);
+    await stockSubtractor.subtract();
+
+    const entity = await strapi.services.order.create(ctx.request.body);
     return transformOrder(entity);
   },
 };
