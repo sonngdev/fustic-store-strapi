@@ -39,7 +39,11 @@ async function transformOrder(order) {
 
 module.exports = {
   async create(ctx) {
-    const cartValidator = new CartValidator(ctx.request.body.products);
+    const cart = typeof ctx.request.body === 'string'
+      ? JSON.parse(ctx.request.body)
+      : ctx.request.body;
+
+    const cartValidator = new CartValidator(cart.products);
     const cartValid = await cartValidator.isValid();
     if (!cartValid) return ctx.badRequest('Cart is invalid');
 
