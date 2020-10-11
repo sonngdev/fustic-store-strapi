@@ -10,4 +10,14 @@ module.exports = ({ env }) => ({
       },
     },
   },
+  email: {
+    provider: 'sendgrid',
+    providerOptions: {
+      apiKey: env('SENDGRID_API_KEY_PRODUCTION'),
+    },
+    settings: {
+      defaultFrom: 'store@fustic.studio',
+      defaultReplyTo: 'store@fustic.studio',
+    },
+  },
 });
