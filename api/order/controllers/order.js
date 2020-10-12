@@ -8,6 +8,10 @@
 const { sanitizeEntity } = require('strapi-utils');
 const { removeUserInfo } = require('../../../utils/response');
 const { CartValidator, StockValidator, StockSubtractor } = require('../../../utils/order');
+const {
+  orderConfirmationLocalTemplate,
+  orderConfirmationWorldwideTemplate,
+} = require('../../../utils/email');
 
 async function calculateTotalAmount(order) {
   const generalConfig = await strapi.services['general-config'].find();
@@ -56,5 +60,25 @@ module.exports = {
 
     const entity = await strapi.services.order.create(ctx.request.body);
     return transformOrder(entity);
+  },
+
+  async confirm(ctx) {
+    const { id } = ctx.params;
+    const order = await strapi.services.order.findOne({ id });
+    const emailTemplate = order.country === 'Vietnam'
+      ? orderConfirmationLocalTemplate
+      : orderConfirmationWorldwideTemplate;
+
+    await strapi.plugins.email.services.email.sendTemplatedEmail(
+      {
+        to: order.email,
+      },
+      emailTemplate,
+      {
+        order,
+      },
+    );
+
+    ctx.response.status = 201;
   },
 };
