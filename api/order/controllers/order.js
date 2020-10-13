@@ -69,6 +69,9 @@ module.exports = {
       ? orderConfirmationLocalTemplate
       : orderConfirmationWorldwideTemplate;
 
+    const general_config = await strapi.services['general-config'].find();
+    const total_amount = await calculateTotalAmount(order);
+
     await strapi.plugins.email.services.email.sendTemplatedEmail(
       {
         to: order.email,
@@ -76,6 +79,8 @@ module.exports = {
       emailTemplate,
       {
         order,
+        general_config,
+        total_amount,
       },
     );
 
