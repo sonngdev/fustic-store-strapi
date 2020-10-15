@@ -84,6 +84,6 @@ module.exports = {
       },
     );
 
-    ctx.response.status = 201;
+    return { success: true };
   },
 };
