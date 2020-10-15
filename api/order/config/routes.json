@@ -47,6 +47,14 @@
       "config": {
         "policies": []
       }
+    },
+    {
+      "method": "POST",
+      "path": "/orders/:id/confirmations",
+      "handler": "order.confirm",
+      "config": {
+        "policies": []
+      }
     }
   ]
 }
