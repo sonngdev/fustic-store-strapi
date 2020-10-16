@@ -111,7 +111,7 @@ ${getTotalPrice(location)}
 
 const getEmailHtml = (location) => `
 <main style="font-family: Arial, Helvetica, sans-serif;">
-  <h1>Thank you for your purchase!</h1>
+  <h1 style="line-height: 36px;">Thank you for your purchase!</h1>
   <p style="margin: 0 0 15px;">Hi <%= order.first_name %>, we’re getting your order ready to be shipped. Please allow ${getShippingTime(location)} to process the order in addition to the transit time.</p>
   <p style="margin: 0 0 15px;">NOTE: All orders are final sale. Please make sure you purchase the correct style, size & color.</p>
   <p style="margin: 0 0 15px;">
