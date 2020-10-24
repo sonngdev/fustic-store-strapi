@@ -90,4 +90,24 @@ module.exports = {
 
     return { success: true };
   },
+
+  async validate(ctx) {
+    const cart = typeof ctx.request.body === 'string'
+      ? JSON.parse(ctx.request.body)
+      : ctx.request.body;
+
+    const cartValidator = new CartValidator(cart);
+    const cartValid = await cartValidator.isValid();
+    if (!cartValid) return ctx.badRequest('Cart is invalid');
+
+    const stockValidator = new StockValidator(cartValidator);
+    const stockValid = await stockValidator.isValid();
+    if (!stockValid) return ctx.badRequest(await stockValidator.getEntries());
+
+    const totalAmount = await calculateTotalAmount(cart);
+    return {
+      valid: true,
+      total_amount: totalAmount,
+    }
+  },
 };
