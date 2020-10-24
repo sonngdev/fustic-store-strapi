@@ -13,13 +13,13 @@ const {
   orderConfirmationWorldwideTemplate,
 } = require('../../../utils/email');
 
-async function calculateTotalAmount(order) {
+async function calculateTotalAmount(products) {
   const generalConfig = await strapi.services['general-config'].find();
   const initTotal = {
     vnd: generalConfig.shipping_fee_vnd || 0,
     usd: generalConfig.shipping_fee_usd || 0,
   };
-  return order.products.reduce((acc, entry) => ({
+  return products.reduce((acc, entry) => ({
     vnd: acc.vnd + entry.product.price_vnd * entry.quantity,
     usd: acc.usd + entry.product.price_usd * entry.quantity,
   }), initTotal);
@@ -27,7 +27,7 @@ async function calculateTotalAmount(order) {
 
 async function addTotalAmount(order) {
   let transformed = { ...order };
-  const totalAmount = await calculateTotalAmount(order);
+  const totalAmount = await calculateTotalAmount(order.products);
   transformed.total_amount_vnd = totalAmount.vnd;
   transformed.total_amount_usd = totalAmount.usd;
   return transformed;
@@ -70,7 +70,7 @@ module.exports = {
       : orderConfirmationWorldwideTemplate;
 
     const general_config = await strapi.services['general-config'].find();
-    const total_amount = await calculateTotalAmount(order);
+    const total_amount = await calculateTotalAmount(order.products);
 
     await strapi.plugins.email.services.email.sendTemplatedEmail(
       {
