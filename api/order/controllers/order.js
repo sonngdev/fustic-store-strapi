@@ -32,19 +32,10 @@ async function calculateTotalAmount(cart) {
   }, initTotal);
 }
 
-async function addTotalAmount(order) {
-  let transformed = { ...order };
-  const totalAmount = await calculateTotalAmount(order.products);
-  transformed.total_amount_vnd = totalAmount.vnd;
-  transformed.total_amount_usd = totalAmount.usd;
-  return transformed;
-}
-
 async function transformOrder(order) {
   let transformed = { ...order };
   transformed = sanitizeEntity(order, { model: strapi.models.order });
   transformed = removeUserInfo(transformed);
-  transformed = await addTotalAmount(transformed);
   return transformed;
 }
 
@@ -65,7 +56,12 @@ module.exports = {
     const stockSubtractor = new StockSubtractor(stockValidator);
     await stockSubtractor.subtract();
 
-    const entity = await strapi.services.order.create(ctx.request.body);
+    const totalAmount = await calculateTotalAmount(payload.products);
+    const entity = await strapi.services.order.create({
+      ...payload,
+      total_amount_vnd: totalAmount.vnd,
+      total_amount_usd: totalAmount.usd,
+    });
     return transformOrder(entity);
   },
 
@@ -77,7 +73,6 @@ module.exports = {
       : orderConfirmationWorldwideTemplate;
 
     const general_config = await strapi.services['general-config'].find();
-    const total_amount = await calculateTotalAmount(order.products);
 
     await strapi.plugins.email.services.email.sendTemplatedEmail(
       {
@@ -87,7 +82,6 @@ module.exports = {
       {
         order,
         general_config,
-        total_amount,
       },
     );
     await strapi.services.order.update({ id }, {

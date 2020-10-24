@@ -63,10 +63,10 @@ const getShippingPrice = (location) => {
 
 const getTotalPrice = (location) => {
   if (location === LOCATION.LOCAL) {
-    return '<%= total_amount.vnd.toLocaleString() %> VND';
+    return '<%= order.total_amount_vnd.toLocaleString() %> VND';
   }
   if (location === LOCATION.WORLDWIDE) {
-    return '$<%= total_amount.usd.toLocaleString() %>';
+    return '$<%= order.total_amount_usd.toLocaleString() %>';
   }
 }
 
@@ -81,10 +81,10 @@ const getCurrency = (location) => {
 
 const getTotalPriceNumber = (location) => {
   if (location === LOCATION.LOCAL) {
-    return '<%= total_amount.vnd %>';
+    return '<%= order.total_amount_vnd %>';
   }
   if (location === LOCATION.WORLDWIDE) {
-    return '<%= total_amount.usd %>';
+    return '<%= order.total_amount_usd %>';
   }
 }
 
