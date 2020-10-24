@@ -54,6 +54,9 @@
     },
     "paypal_order": {
       "type": "json"
+    },
+    "apartment": {
+      "type": "string"
     }
   }
 }
