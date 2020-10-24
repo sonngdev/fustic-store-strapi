@@ -83,6 +83,9 @@ module.exports = {
         total_amount,
       },
     );
+    await strapi.services.order.update({ id }, {
+      status: 'pending',
+    });
 
     return { success: true };
   },
