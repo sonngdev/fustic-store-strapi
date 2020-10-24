@@ -57,6 +57,13 @@
     },
     "apartment": {
       "type": "string"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "processing"
+      ]
     }
   }
 }
