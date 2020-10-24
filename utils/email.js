@@ -16,7 +16,7 @@ const getShippingTime = (location) => {
     return '3-5 business days';
   }
   if (location === LOCATION.WORLDWIDE) {
-    return '2-3 business weeks';
+    return '3-4 weeks';
   }
 }
 
