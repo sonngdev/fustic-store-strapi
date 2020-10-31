@@ -55,6 +55,14 @@
       "config": {
         "policies": []
       }
+    },
+    {
+      "method": "POST",
+      "path": "/orders/validations",
+      "handler": "order.validate",
+      "config": {
+        "policies": []
+      }
     }
   ]
 }
