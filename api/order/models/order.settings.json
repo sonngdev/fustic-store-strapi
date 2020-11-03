@@ -54,6 +54,22 @@
     },
     "paypal_order": {
       "type": "json"
+    },
+    "apartment": {
+      "type": "string"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "pending",
+        "processing"
+      ]
+    },
+    "total_amount_vnd": {
+      "type": "integer"
+    },
+    "total_amount_usd": {
+      "type": "decimal"
     }
   }
 }
