@@ -10,12 +10,7 @@ module.exports = ({ env }) => ({
         database: env('DATABASE_NAME', 'fustic_store_cms'),
         username: env('DATABASE_USERNAME', ''),
         password: env('DATABASE_PASSWORD', ''),
-        ssl: {
-          rejectUnauthorized: false,
-        }
-      },
-      options: {
-        ssl: env.bool('DATABASE_SSL', true),
+        ssl: env.bool('DATABASE_SSL', false),
       },
     },
   },
